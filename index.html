@@ -6,15 +6,39 @@
   <title>White House Form</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body, html {
       margin: 0;
       padding: 0;
       font-family: 'Roboto', sans-serif;
       height: 100%;
-      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      overflow: hidden;
+    }
+
+    .background-video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: auto;
+      height: auto;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      object-fit: cover;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
 
     .form-box {
@@ -25,8 +49,8 @@
       width: 90%;
       max-width: 500px;
       text-align: center;
-      backdrop-filter: blur(1px);
-      -webkit-backdrop-filter: blur(1px);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 105, 97, 0.3);
     }
 
@@ -80,22 +104,31 @@
 </head>
 <body>
 
-  <div class="form-box">
-    <h2>Biểu mẫu gửi về Google Sheets</h2>
+  <!-- Video nền -->
+  <video class="background-video" autoplay loop muted playsinline>
+    <source src="https://packaged-media.redd.it/kscodmjz8bpc1/pb/m2-res_1080p.mp4?m=DASHPlaylist.mpd&v=1&e=1750852800&s=b97e1f9dc7d587f0ea1d1c0bedbd6eef2d4ae2fc" type="video/mp4">
+    Trình duyệt của bạn không hỗ trợ video.
+  </video>
 
-    <form id="myForm" action="https://script.google.com/macros/s/AKfycbzJVojt2Omo3p4eM9r1tw1XsGJyjiSOL_sgq96nh9VJREsGV4yh7lVU8Vwe5U4EiXY7Pw/exec" method="POST">
-      <label for="name">Họ tên:</label>
-      <input type="text" name="Họ tên" required>
+  <!-- Biểu mẫu -->
+  <div class="container">
+    <div class="form-box">
+      <h2>Biểu mẫu gửi về Google Sheets</h2>
 
-      <label for="email">Email:</label>
-      <input type="email" name="Email" required>
+      <form id="myForm" action="https://script.google.com/macros/s/AKfycbzJVojt2Omo3p4eM9r1tw1XsGJyjiSOL_sgq96nh9VJREsGV4yh7lVU8Vwe5U4EiXY7Pw/exec" method="POST">
+        <label for="name">Họ tên:</label>
+        <input type="text" name="Họ tên" required>
 
-      <label for="message">Nội dung:</label>
-      <textarea name="Nội dung" rows="5" required></textarea>
+        <label for="email">Email:</label>
+        <input type="email" name="Email" required>
 
-      <button type="submit">Gửi</button>
-      <p class="success-message" id="successMessage">✅ Gửi thành công! Cảm ơn bạn.</p>
-    </form>
+        <label for="message">Nội dung:</label>
+        <textarea name="Nội dung" rows="5" required></textarea>
+
+        <button type="submit">Gửi</button>
+        <p class="success-message" id="successMessage">✅ Gửi thành công! Cảm ơn bạn.</p>
+      </form>
+    </div>
   </div>
 
   <script>
