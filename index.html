@@ -40,13 +40,16 @@
     }
 
     .form-box {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 192, 203, 0.25); /* Hồng nhạt pha đỏ, mờ nhẹ */
       padding: 30px 40px;
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       width: 90%;
       max-width: 500px;
       text-align: center;
+      backdrop-filter: blur(6px); /* Làm mờ nền sau */
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 105, 97, 0.3); /* Viền đỏ nhạt */
     }
 
     .form-box img {
@@ -57,7 +60,7 @@
 
     h2 {
       margin-bottom: 20px;
-      color: #333;
+      color: #8B0000; /* Đỏ đậm */
     }
 
     form {
@@ -69,6 +72,7 @@
       text-align: left;
       margin: 10px 0 5px;
       font-weight: bold;
+      color: #6b1e1e;
     }
 
     input, textarea {
@@ -81,7 +85,7 @@
 
     button {
       padding: 12px;
-      background: #007BFF;
+      background: #e75454;
       color: white;
       border: none;
       border-radius: 6px;
@@ -91,7 +95,7 @@
     }
 
     button:hover {
-      background: #0056b3;
+      background: #c93838;
     }
 
     .success {
@@ -113,7 +117,7 @@
   <!-- Biểu mẫu -->
   <div class="container">
     <div class="form-box">
-      <!-- Hình ảnh trên cùng -->
+      <!-- Hình ảnh đầu trang -->
       <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVBMsuO1gyZcJp7-IbqfYf9aCgXLfUavzE31pOZbtcwtYTZ1ZvEaI3Hi7WdvPzRKqoA5Bvox0lSGmEJAvK1Q9RQAaHY5mw6Cj1ah8HiKNdI5nDA8YrRZ28IN-A8lsH0_Qw-GWlgFjOdT0jZdDKDbDCSq=w1920?key=pL74uRo6jH6YZBCnkHHxew" alt="Biểu ngữ">
 
       <h2>Biểu mẫu liên hệ</h2>
