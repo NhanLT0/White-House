@@ -18,18 +18,20 @@
       overflow: hidden;
     }
 
-    /* Video nền */
+    /* Video nền căn giữa mọi thiết bị */
     .background-video {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 50%;
+      left: 50%;
+      width: auto;
+      height: auto;
       min-width: 100%;
       min-height: 100%;
+      transform: translate(-50%, -50%);
       z-index: -1;
       object-fit: cover;
     }
 
-    /* Container biểu mẫu */
     .container {
       position: relative;
       width: 100%;
@@ -37,18 +39,19 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
 
     .form-box {
-      background: rgba(255, 192, 203, 0.20); /* Hồng nhạt mờ vừa */
+      background: rgba(255, 192, 203, 0.20);
       padding: 30px 40px;
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      width: 90%;
+      width: 100%;
       max-width: 500px;
       text-align: center;
-      backdrop-filter: blur(1px);
-      -webkit-backdrop-filter: blur(1px);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
       border: 1px solid rgba(255, 105, 97, 0.3);
     }
 
