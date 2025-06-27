@@ -53,6 +53,8 @@
       backdrop-filter: blur(1px);
       -webkit-backdrop-filter: blur(1px);
       border: 1px solid rgba(255, 105, 97, 0.3);
+      max-height: 80vh;
+      overflow-y: auto;
     }
 
     .form-box img {
@@ -97,7 +99,13 @@
       transition: background 0.3s;
     }
 
-    button:hover {
+    button:disabled {
+      background: #888;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    button:hover:enabled {
       background: #c93838;
     }
 
@@ -131,17 +139,21 @@
 </head>
 <body>
 
+  <!-- Nền video -->
   <video class="background-video" autoplay loop muted playsinline>
     <source src="https://d1xviafewcoylr.cloudfront.net/m2kzwh%2Ffile%2F3f9da3a5292d61f28d8e18c65a54b09d_37c0022f7d46294021ba6b7101807412.mp4?response-content-disposition=inline%3Bfilename%3D%223f9da3a5292d61f28d8e18c65a54b09d_37c0022f7d46294021ba6b7101807412.mp4%22%3B&response-content-type=video%2Fmp4&Expires=1751017400&Signature=cckEzHHrP3-aQrjuBJDfeUuUbCx76Fhio7h02rR1EddxOhYlODRUuMM0io80p7kocgRb9jolwZ-M8EvogIhtJt~7N51DYhHd0SJnVDW25b~5RPtb9g49gRNJxSCOflcTiu1TvnRlxuZm3RDk3E9r0qhK7D5gaY2WL3RoVyl~cyWPiR8qp48tOlE9PWdstvrpF2H83DD-IE99ekqTCMqZWk7rqXXNzZpG2G9jcDQRCqsC4FHhkQ6MSXgC3UofXHZRQHsIu0vuEzPdkg5d-i~orOGLYz3IC7Erb~JrSEGDk5Hk~EU8EHKQHwvxb8W9yCeepbSLIn2BzAF9RVqVEjnRBQ__&Key-Pair-Id=APKAJT5WQLLEOADKLHBQ" type="video/mp4">
     Trình duyệt của bạn không hỗ trợ video.
   </video>
 
+  <!-- Hiệu ứng pháo bông -->
   <canvas id="fireworks"></canvas>
 
+  <!-- Popup đang gửi -->
   <div class="popup" id="popup">
     <div id="popupText">⏳ Đang gửi, vui lòng chờ...</div>
   </div>
 
+  <!-- Form -->
   <div class="container">
     <div class="form-box">
       <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVBMsuO1gyZcJp7-IbqfYf9aCgXLfUavzE31pOZbtcwtYTZ1ZvEaI3Hi7WdvPzRKqoA5Bvox0lSGmEJAvK1Q9RQAaHY5mw6Cj1ah8HiKNdI5nDA8YrRZ28IN-A8lsH0_Qw-GWlgFjOdT0jZdDKDbDCSq=w1920?key=pL74uRo6jH6YZBCnkHHxew" alt="Banner">
@@ -170,7 +182,7 @@
         <label>Mọi chuyện xảy ra trong SMP sẽ không liên quan tới ngoài đời và ngược lại bạn hiểu chứ?</label>
         <input type="text" name="Hiểu Luật SMP" required>
 
-        <button type="submit">Gửi Đăng Ký</button>
+        <button type="submit" disabled>Gửi Đăng Ký</button>
       </form>
     </div>
   </div>
@@ -180,6 +192,9 @@
     const form = document.getElementById('myForm');
     const popup = document.getElementById('popup');
     const popupText = document.getElementById('popupText');
+    const submitBtn = form.querySelector('button');
+    const inputs = form.querySelectorAll('input, textarea');
+
     const fireworksCanvas = document.getElementById('fireworks');
     const fireworks = new Fireworks.default(fireworksCanvas, {
       autoresize: true,
@@ -192,6 +207,16 @@
       traceSpeed: 10,
       explosion: 6,
     });
+
+    function checkFieldsFilled() {
+      let allFilled = true;
+      inputs.forEach(input => {
+        if (!input.value.trim()) allFilled = false;
+      });
+      submitBtn.disabled = !allFilled;
+    }
+
+    inputs.forEach(input => input.addEventListener('input', checkFieldsFilled));
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -207,6 +232,7 @@
       .then(response => {
         if (response.ok) {
           form.reset();
+          checkFieldsFilled(); // reset nút
           setTimeout(() => {
             popupText.innerText = '🎉 Gửi thành công!';
             fireworks.start();
