@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Đăng Kí Vào Server</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
@@ -21,14 +21,10 @@
       z-index: -1; object-fit: cover;
     }
 
-    /* Audio Control */
     #audioControl {
-      position: fixed;
-      top: 15px;
-      left: 15px;
+      position: fixed; top: 15px; left: 15px;
       z-index: 1001;
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
     }
 
     #audioControl img {
@@ -47,21 +43,11 @@
       border-radius: 10px;
       outline: none;
       appearance: none;
-      -webkit-appearance: none;
       transition: opacity 0.3s;
       opacity: 0;
     }
 
-    #volumeSlider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 4px rgba(0,0,0,0.3);
-      cursor: pointer;
-    }
-
+    #volumeSlider::-webkit-slider-thumb,
     #volumeSlider::-moz-range-thumb {
       width: 14px;
       height: 14px;
@@ -79,11 +65,8 @@
 
     .container {
       position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      width: 100%; height: 100vh;
+      display: flex; justify-content: center; align-items: center;
       padding: 20px;
     }
 
@@ -92,26 +75,20 @@
       padding: 30px 40px;
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      width: 90%;
-      max-width: 500px;
+      width: 90%; max-width: 500px;
       text-align: center;
       backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      max-height: 80vh;
-      overflow-y: auto;
+      max-height: 80vh; overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: rgba(255,255,255,0.4) rgba(255,255,255,0.1);
     }
 
-    .form-box::-webkit-scrollbar {
-      width: 8px;
-    }
-
+    .form-box::-webkit-scrollbar { width: 8px; }
     .form-box::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.4);
       border-radius: 10px;
     }
-
     .form-box::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
@@ -123,24 +100,16 @@
       margin-bottom: 20px;
     }
 
-    h2 {
-      margin-bottom: 20px;
-    }
-
+    h2 { margin-bottom: 20px; }
     label {
-      text-align: left;
-      margin-top: 10px;
-      font-weight: 600;
-      display: block;
+      text-align: left; margin-top: 10px;
+      font-weight: 600; display: block;
     }
 
     input, textarea {
-      padding: 10px;
-      font-size: 15px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 100%;
+      padding: 10px; font-size: 15px;
+      margin-bottom: 15px; border-radius: 6px;
+      border: 1px solid #ccc; width: 100%;
     }
 
     button {
@@ -157,9 +126,7 @@
     }
 
     button:disabled {
-      background: #888;
-      cursor: not-allowed;
-      opacity: 0.6;
+      background: #888; cursor: not-allowed; opacity: 0.6;
     }
 
     button:hover:enabled {
@@ -167,34 +134,28 @@
     }
 
     .popup {
-      display: none;
-      position: fixed;
+      display: none; position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.7);
-      color: white;
-      font-size: 24px;
-      justify-content: center;
-      align-items: center;
+      color: white; font-size: 24px;
+      justify-content: center; align-items: center;
       z-index: 1000;
-      flex-direction: column;
-      text-align: center;
+      flex-direction: column; text-align: center;
     }
 
     #fireworks {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       pointer-events: none;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       z-index: 999;
     }
   </style>
 </head>
 <body>
 
-  <!-- Nền video -->
+  <!-- Video nền -->
   <video class="background-video" autoplay loop muted playsinline>
     <source src="https://dtllcx9aqzlch.cloudfront.net/c4tcyh%2Ffile%2F5bedb79737a7a96694acb9edb437aa37_949bb4a20d764afa160ce73bda29a3d9.mp4?response-content-disposition=inline%3Bfilename%3D%225bedb79737a7a96694acb9edb437aa37_949bb4a20d764afa160ce73bda29a3d9.mp4%22%3B&response-content-type=video%2Fmp4&Expires=1751019296&Signature=MWeu-NmTwt2G6YRThk1rFomCvVpWtvleBIGSqlr-fdd18dvXuKuuWTaWvL~F5t3X0h1VAZ9GTVw25D5OowHoJofjqXCXYFrpIE~nZEUTaHkB3L1Vh~pMT8E~cBeJWoGtaYkWRdT1NtAnwdeYKxKsAomVPCFmP~K23iVsgjYshNsUMVD95ONQohg~VO-pXjvpDZDyRVvj09UUBHHkHJ-xx62afFLjzUOSg5JV4iIGNB4WI3FjJ8yqqNSOTXj2nFYW4I1YB5~mR-wJoaaW4FjZ~CmcosHPLPu--FwWRH1pIscX2VRGozrvAYQQw5TEZnpT~EgGqOcCIuuT3-1zPQwhvg__&Key-Pair-Id=APKAJT5WQLLEOADKLHBQ" type="video/mp4">
   </video>
@@ -203,7 +164,7 @@
   <div id="audioControl">
     <img src="https://cdn-icons-png.flaticon.com/512/727/727269.png" id="audioIcon" alt="Loa">
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
-    <audio id="bgAudio" src="https://nhanlt0.github.io/White-House/xo.mp3" loop></audio>
+    <audio id="bgAudio" src="https://nhanlt0.github.io/White-House/xo.mp3" autoplay loop></audio>
   </div>
 
   <canvas id="fireworks"></canvas>
@@ -232,6 +193,14 @@
     const audioIcon = document.getElementById('audioIcon');
     const volSlider = document.getElementById('volumeSlider');
 
+    // Auto play nhạc khi vào trang (nếu trình duyệt cho phép)
+    window.addEventListener('DOMContentLoaded', () => {
+      bgAudio.volume = 0.5;
+      bgAudio.play().catch(() => {
+        console.log('Autoplay bị trình duyệt chặn. Sẽ phát khi người dùng bấm vào.');
+      });
+    });
+
     audioIcon.addEventListener('click', () => {
       document.getElementById('audioControl').classList.toggle('show-slider');
       if (bgAudio.paused) bgAudio.play();
@@ -240,9 +209,6 @@
     volSlider.addEventListener('input', () => {
       bgAudio.volume = volSlider.value;
     });
-
-    bgAudio.volume = 0.5;
-    bgAudio.play().catch(()=>{});
 
     const form = document.getElementById('myForm');
     const popup = document.getElementById('popup');
