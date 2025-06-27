@@ -6,36 +6,160 @@
   <title>Đăng Kí Vào Server</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
-    /* (Toàn bộ phần CSS đã được viết lại — xem bản đầy đủ ở trên hoặc yêu cầu lại nếu cần) */
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', sans-serif;
+      height: 100%;
+      overflow: hidden;
+      color: white;
+    }
+    .background-video {
+      position: fixed;
+      top: 50%; left: 50%;
+      min-width: 100%; min-height: 100%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      object-fit: cover;
+    }
+    #welcomePopup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex; justify-content: center; align-items: center;
+      flex-direction: column; text-align: center;
+      z-index: 2000;
+    }
+    #welcomePopup.hidden {
+      opacity: 0; pointer-events: none;
+    }
+    #welcomePopup button {
+      padding: 12px 24px;
+      background: #e75454;
+      border: none; border-radius: 6px;
+      color: white; cursor: pointer;
+    }
+    #audioControl {
+      position: fixed;
+      top: 15px; left: 15px;
+      z-index: 1001;
+      display: flex; align-items: center;
+    }
+    #audioControl img {
+      width: 32px; height: 32px;
+      filter: invert(1); cursor: pointer;
+    }
+    #volumeSlider {
+      display: none;
+      margin-left: 12px;
+      width: 110px; height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #audioControl:hover #volumeSlider,
+    #audioControl.show-slider #volumeSlider {
+      display: block; opacity: 1;
+    }
+    .container {
+      width: 100%; height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+      padding: 20px;
+    }
+    .form-box {
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.2);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .form-box img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button.submitBtn {
+      padding: 12px;
+      width: 100%;
+      background: #e75454;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button.submitBtn:disabled {
+      background: #888;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      flex-direction: column;
+    }
+    .popup.success #popupText {
+      animation: bounce 0.6s ease 2;
+      color: #00ffcc;
+    }
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    #fireworks {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Video nền -->
-  <video class="background-video" autoplay loop muted playsinline preload="auto">
+  <video class="background-video" autoplay loop muted playsinline>
     <source src="https://nhanlt0.github.io/White-House/video.mp4" type="video/mp4">
   </video>
 
-  <!-- Popup chào mừng -->
   <div id="welcomePopup">
     <h1>Chào Mừng Bạn Đến Với Violence SMP</h1>
     <button id="continueBtn">Tiếp tục</button>
   </div>
 
-  <!-- Điều khiển âm thanh -->
   <div id="audioControl">
     <img src="https://cdn-icons-png.flaticon.com/512/727/727269.png" id="audioIcon" alt="Loa">
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
     <audio id="bgAudio" src="https://nhanlt0.github.io/White-House/xo.mp3" loop></audio>
   </div>
 
-  <!-- Pháo hoa -->
   <canvas id="fireworks"></canvas>
-
-  <!-- Thông báo -->
   <div class="popup" id="popup"><div id="popupText">⏳ Đang gửi, vui lòng chờ...</div></div>
 
-  <!-- Form đăng ký -->
   <div class="container">
     <div class="form-box">
       <img src="https://nhanlt0.github.io/White-House/image.webp" alt="Banner">
@@ -44,10 +168,8 @@
         <label>Họ & Tên (Tên Thật):</label><input type="text" name="name" required>
         <label>Hiện Tại Bao Nhiêu Tuổi?</label><input type="number" name="age" required>
         <label>Nam or Nữ?? (Ghi Đúng):</label><input type="text" name="gender" required>
-        <label>Tên trong game của bạn? (Ghi Đúng!!):</label><input type="text" name="ingame" required>
-        <label>Bạn chơi JAVA or PE?</label><input type="text" name="version" required>
         <label>Tên Discord (ID đầy đủ):</label><input type="text" name="discord" required>
-        <label>Mục Đích Vào Server Là Gì?</label><textarea name="purpose" rows="3" required></textarea>
+        <label>Mục Đích Vào Server Là Gì?</label><textarea name="purpose" required></textarea>
         <label>Bạn Đã Đọc Hết Luật Trong Server Chưa?</label><input type="text" name="rules" required>
         <label>Mọi chuyện xảy ra trong SMP... bạn hiểu chứ?</label><input type="text" name="understand" required>
         <button class="submitBtn" type="submit" disabled>Gửi Đăng Ký</button>
@@ -55,7 +177,6 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2/dist/index.umd.min.js"></script>
   <script>
     const welcome = document.getElementById('welcomePopup');
@@ -63,6 +184,11 @@
     const bgAudio = document.getElementById('bgAudio');
     const audioIcon = document.getElementById('audioIcon');
     const volSlider = document.getElementById('volumeSlider');
+    const popup = document.getElementById('popup');
+    const popupText = document.getElementById('popupText');
+    const form = document.getElementById('myForm');
+    const submitBtn = form.querySelector('.submitBtn');
+    const inputs = form.querySelectorAll('input, textarea');
 
     contBtn.addEventListener('click', () => {
       bgAudio.volume = volSlider.value;
@@ -78,12 +204,6 @@
     });
 
     volSlider.addEventListener('input', () => bgAudio.volume = volSlider.value);
-
-    const form = document.getElementById('myForm');
-    const popup = document.getElementById('popup');
-    const popupText = document.getElementById('popupText');
-    const submitBtn = form.querySelector('.submitBtn');
-    const inputs = form.querySelectorAll('input, textarea');
 
     inputs.forEach(i => i.addEventListener('input', () => {
       submitBtn.disabled = ![...inputs].every(el => el.value.trim());
@@ -106,9 +226,8 @@
       popupText.innerText = '⏳ Đang gửi, vui lòng chờ...';
       popup.style.display = 'flex';
 
-      const formData = new FormData(form);
       const data = {};
-      for (let [k, v] of formData) data[k] = v.trim();
+      new FormData(form).forEach((v, k) => data[k] = v.trim());
 
       try {
         const res = await fetch('https://160.250.134.139:3000/discord', {
@@ -116,18 +235,21 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
+
         if (res.ok) {
           form.reset();
           submitBtn.disabled = true;
           setTimeout(() => {
+            popup.classList.add('success');
             popupText.innerText = '🎉 Gửi thành công!';
             fireworks.start();
             setTimeout(() => {
               fireworks.stop();
+              popup.classList.remove('success');
               popup.style.display = 'none';
             }, 5000);
           }, 1000);
-        } else throw '';
+        } else throw new Error();
       } catch {
         popupText.innerText = '❌ Lỗi khi gửi.';
         setTimeout(() => popup.style.display = 'none', 3000);
