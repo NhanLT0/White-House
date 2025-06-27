@@ -1,35 +1,80 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Đăng Kí Vào Server</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body, html {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: 'Poppins', sans-serif;
-      height: 100%;
-      overflow: hidden;
+      height: 100%; overflow: hidden;
       color: white;
     }
 
     .background-video {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: auto;
-      height: auto;
-      min-width: 100%;
-      min-height: 100%;
+      position: fixed; top: 50%; left: 50%;
+      min-width: 100%; min-height: 100%;
       transform: translate(-50%, -50%);
-      z-index: -1;
-      object-fit: cover;
+      z-index: -1; object-fit: cover;
+    }
+
+    /* Audio Control */
+    #audioControl {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+    }
+
+    #audioControl img {
+      width: 32px;
+      height: 32px;
+      filter: invert(1);
+      cursor: pointer;
+    }
+
+    #volumeSlider {
+      display: none;
+      margin-left: 12px;
+      width: 110px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+
+    #volumeSlider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+
+    #volumeSlider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+
+    #audioControl:hover #volumeSlider,
+    #audioControl.show-slider #volumeSlider {
+      display: block;
+      opacity: 1;
     }
 
     .container {
@@ -51,7 +96,6 @@
       max-width: 500px;
       text-align: center;
       backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       max-height: 80vh;
       overflow-y: auto;
@@ -80,7 +124,6 @@
     }
 
     h2 {
-      color: #fff;
       margin-bottom: 20px;
     }
 
@@ -88,12 +131,7 @@
       text-align: left;
       margin-top: 10px;
       font-weight: 600;
-      color: #fff;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
+      display: block;
     }
 
     input, textarea {
@@ -102,6 +140,7 @@
       margin-bottom: 15px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      width: 100%;
     }
 
     button {
@@ -113,6 +152,8 @@
       font-size: 16px;
       cursor: pointer;
       transition: background 0.3s;
+      width: 100%;
+      margin-top: 10px;
     }
 
     button:disabled {
@@ -128,10 +169,8 @@
     .popup {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.7);
       color: white;
       font-size: 24px;
@@ -155,44 +194,33 @@
 </head>
 <body>
 
+  <!-- Nền video -->
   <video class="background-video" autoplay loop muted playsinline>
     <source src="https://dtllcx9aqzlch.cloudfront.net/c4tcyh%2Ffile%2F5bedb79737a7a96694acb9edb437aa37_949bb4a20d764afa160ce73bda29a3d9.mp4?response-content-disposition=inline%3Bfilename%3D%225bedb79737a7a96694acb9edb437aa37_949bb4a20d764afa160ce73bda29a3d9.mp4%22%3B&response-content-type=video%2Fmp4&Expires=1751019296&Signature=MWeu-NmTwt2G6YRThk1rFomCvVpWtvleBIGSqlr-fdd18dvXuKuuWTaWvL~F5t3X0h1VAZ9GTVw25D5OowHoJofjqXCXYFrpIE~nZEUTaHkB3L1Vh~pMT8E~cBeJWoGtaYkWRdT1NtAnwdeYKxKsAomVPCFmP~K23iVsgjYshNsUMVD95ONQohg~VO-pXjvpDZDyRVvj09UUBHHkHJ-xx62afFLjzUOSg5JV4iIGNB4WI3FjJ8yqqNSOTXj2nFYW4I1YB5~mR-wJoaaW4FjZ~CmcosHPLPu--FwWRH1pIscX2VRGozrvAYQQw5TEZnpT~EgGqOcCIuuT3-1zPQwhvg__&Key-Pair-Id=APKAJT5WQLLEOADKLHBQ" type="video/mp4">
-    Trình duyệt của bạn không hỗ trợ video.
   </video>
 
-  <canvas id="fireworks"></canvas>
-
-  <div class="popup" id="popup">
-    <div id="popupText">⏳ Đang gửi, vui lòng chờ...</div>
+  <!-- Âm thanh -->
+  <div id="audioControl">
+    <img src="https://cdn-icons-png.flaticon.com/512/727/727269.png" id="audioIcon" alt="Loa">
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <audio id="bgAudio" src="https://your-github-link.github.io/xo.mp3" loop></audio>
   </div>
+
+  <canvas id="fireworks"></canvas>
+  <div class="popup" id="popup"><div id="popupText">⏳ Đang gửi, vui lòng chờ...</div></div>
 
   <div class="container">
     <div class="form-box">
       <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVBMsuO1gyZcJp7-IbqfYf9aCgXLfUavzE31pOZbtcwtYTZ1ZvEaI3Hi7WdvPzRKqoA5Bvox0lSGmEJAvK1Q9RQAaHY5mw6Cj1ah8HiKNdI5nDA8YrRZ28IN-A8lsH0_Qw-GWlgFjOdT0jZdDKDbDCSq=w1920?key=pL74uRo6jH6YZBCnkHHxew" alt="Banner">
       <h2>Đăng Kí Vào Server</h2>
-
       <form id="myForm" action="https://script.google.com/macros/s/AKfycbzJVojt2Omo3p4eM9r1tw1XsGJyjiSOL_sgq96nh9VJREsGV4yh7lVU8Vwe5U4EiXY7Pw/exec" method="POST">
-        <label>Họ & Tên (Tên Thật):</label>
-        <input type="text" name="Họ và Tên" required>
-
-        <label>Hiện Tại Bao Nhiêu Tuổi?</label>
-        <input type="number" name="Tuổi" required>
-
-        <label>Nam or Nữ?? (Ghi Đúng):</label>
-        <input type="text" name="Giới Tính" required>
-
-        <label>Tên Discord (Bao gồm ID Discord Cá Nhân):</label>
-        <input type="text" name="Tên Discord" required>
-
-        <label>Mục Đích Vào Server Là Gì?</label>
-        <textarea name="Mục Đích" rows="3" required></textarea>
-
-        <label>Bạn Đã Đọc Hết Luật Trong Server Chưa?</label>
-        <input type="text" name="Đọc Luật" required>
-
-        <label>Mọi chuyện xảy ra trong SMP sẽ không liên quan tới ngoài đời và ngược lại bạn hiểu chứ?</label>
-        <input type="text" name="Hiểu Luật SMP" required>
-
+        <label>Họ & Tên (Tên Thật):</label><input type="text" name="Họ và Tên" required>
+        <label>Hiện Tại Bao Nhiêu Tuổi?</label><input type="number" name="Tuổi" required>
+        <label>Nam or Nữ?? (Ghi Đúng):</label><input type="text" name="Giới Tính" required>
+        <label>Tên Discord (Bao gồm ID Discord Cá Nhân):</label><input type="text" name="Tên Discord" required>
+        <label>Mục Đích Vào Server Là Gì?</label><textarea name="Mục Đích" rows="3" required></textarea>
+        <label>Bạn Đã Đọc Hết Luật Trong Server Chưa?</label><input type="text" name="Đọc Luật" required>
+        <label>Mọi chuyện xảy ra trong SMP … bạn hiểu chứ?</label><input type="text" name="Hiểu Luật SMP" required>
         <button type="submit" disabled>Gửi Đăng Ký</button>
       </form>
     </div>
@@ -200,70 +228,61 @@
 
   <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2/dist/index.umd.min.js"></script>
   <script>
+    const bgAudio = document.getElementById('bgAudio');
+    const audioIcon = document.getElementById('audioIcon');
+    const volSlider = document.getElementById('volumeSlider');
+
+    audioIcon.addEventListener('click', () => {
+      document.getElementById('audioControl').classList.toggle('show-slider');
+      if (bgAudio.paused) bgAudio.play();
+    });
+
+    volSlider.addEventListener('input', () => {
+      bgAudio.volume = volSlider.value;
+    });
+
+    bgAudio.volume = 0.5;
+    bgAudio.play().catch(()=>{});
+
     const form = document.getElementById('myForm');
     const popup = document.getElementById('popup');
     const popupText = document.getElementById('popupText');
     const submitBtn = form.querySelector('button');
     const inputs = form.querySelectorAll('input, textarea');
 
-    const fireworksCanvas = document.getElementById('fireworks');
-    const fireworks = new Fireworks.default(fireworksCanvas, {
-      autoresize: true,
-      opacity: 0.9,
-      acceleration: 1.05,
-      friction: 0.95,
-      gravity: 1.5,
-      particles: 100,
-      traceLength: 3,
-      traceSpeed: 10,
-      explosion: 6,
+    inputs.forEach(i => i.addEventListener('input', () => {
+      const filled = Array.from(inputs).every(el => el.value.trim());
+      submitBtn.disabled = !filled;
+    }));
+
+    const fireworks = new Fireworks.default(document.getElementById('fireworks'), {
+      autoresize:true,opacity:0.9,acceleration:1.05,friction:0.95,
+      gravity:1.5,particles:100,traceLength:3,traceSpeed:10,explosion:6
     });
 
-    function checkFieldsFilled() {
-      let allFilled = true;
-      inputs.forEach(input => {
-        if (!input.value.trim()) allFilled = false;
-      });
-      submitBtn.disabled = !allFilled;
-    }
-
-    inputs.forEach(input => input.addEventListener('input', checkFieldsFilled));
-
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
-      popupText.innerText = '⏳ Đang gửi, vui lòng chờ...';
+      popupText.textContent = '⏳ Đang gửi, vui lòng chờ...';
       popup.style.display = 'flex';
-
-      const formData = new FormData(form);
-
-      fetch(form.action, {
-        method: 'POST',
-        body: formData,
-      })
-      .then(response => {
-        if (response.ok) {
+      try {
+        const res = await fetch(form.action, { method:'POST', body:new FormData(form) });
+        if (res.ok) {
           form.reset();
-          checkFieldsFilled();
-          setTimeout(() => {
-            popupText.innerText = '🎉 Gửi thành công!';
+          submitBtn.disabled = true;
+          setTimeout(()=>{
+            popupText.textContent = '🎉 Gửi thành công!';
             fireworks.start();
-            setTimeout(() => {
+            setTimeout(()=>{
               fireworks.stop();
-              popup.style.display = 'none';
+              popup.style.display='none';
             }, 5000);
-          }, 1000);
-        } else {
-          popupText.innerText = '❌ Lỗi khi gửi. Vui lòng thử lại.';
-          setTimeout(() => popup.style.display = 'none', 3000);
-        }
-      })
-      .catch(error => {
-        popupText.innerText = '❌ Không thể kết nối.';
-        console.error(error);
-        setTimeout(() => popup.style.display = 'none', 3000);
-      });
+          },1000);
+        } else throw new Error();
+      } catch {
+        popupText.textContent = '❌ Lỗi khi gửi.';
+        setTimeout(()=>popup.style.display='none',3000);
+      }
     });
   </script>
-
 </body>
 </html>
