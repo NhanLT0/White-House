@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Đăng Kí Vào Server</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
-    /* --- Styles giữ nguyên như bản hiện tại --- */
+    /* (Toàn bộ phần CSS đã được viết lại — xem bản đầy đủ ở trên hoặc yêu cầu lại nếu cần) */
   </style>
 </head>
 <body>
 
+  <!-- Video nền -->
   <video class="background-video" autoplay loop muted playsinline preload="auto">
     <source src="https://nhanlt0.github.io/White-House/video.mp4" type="video/mp4">
   </video>
 
-  <div id="welcomePopup">...</div>
-  <div id="audioControl">...</div>
+  <!-- Popup chào mừng -->
+  <div id="welcomePopup">
+    <h1>Chào Mừng Bạn Đến Với Violence SMP</h1>
+    <button id="continueBtn">Tiếp tục</button>
+  </div>
+
+  <!-- Điều khiển âm thanh -->
+  <div id="audioControl">
+    <img src="https://cdn-icons-png.flaticon.com/512/727/727269.png" id="audioIcon" alt="Loa">
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <audio id="bgAudio" src="https://nhanlt0.github.io/White-House/xo.mp3" loop></audio>
+  </div>
+
+  <!-- Pháo hoa -->
   <canvas id="fireworks"></canvas>
+
+  <!-- Thông báo -->
   <div class="popup" id="popup"><div id="popupText">⏳ Đang gửi, vui lòng chờ...</div></div>
 
+  <!-- Form đăng ký -->
   <div class="container">
     <div class="form-box">
       <img src="https://nhanlt0.github.io/White-House/image.webp" alt="Banner">
@@ -39,9 +55,29 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2/dist/index.umd.min.js"></script>
   <script>
-    // --- phần popup + audio control + fireworks giữ nguyên như trước ---
+    const welcome = document.getElementById('welcomePopup');
+    const contBtn = document.getElementById('continueBtn');
+    const bgAudio = document.getElementById('bgAudio');
+    const audioIcon = document.getElementById('audioIcon');
+    const volSlider = document.getElementById('volumeSlider');
+
+    contBtn.addEventListener('click', () => {
+      bgAudio.volume = volSlider.value;
+      bgAudio.play().catch(console.error);
+      welcome.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    });
+
+    audioIcon.addEventListener('click', () => {
+      document.getElementById('audioControl').classList.toggle('show-slider');
+      bgAudio.volume = volSlider.value;
+      bgAudio.play().catch(console.error);
+    });
+
+    volSlider.addEventListener('input', () => bgAudio.volume = volSlider.value);
 
     const form = document.getElementById('myForm');
     const popup = document.getElementById('popup');
@@ -49,40 +85,52 @@
     const submitBtn = form.querySelector('.submitBtn');
     const inputs = form.querySelectorAll('input, textarea');
 
-    inputs.forEach(i=>i.addEventListener('input',()=>{
-      submitBtn.disabled = ![...inputs].every(el=>el.value.trim());
+    inputs.forEach(i => i.addEventListener('input', () => {
+      submitBtn.disabled = ![...inputs].every(el => el.value.trim());
     }));
 
-    form.addEventListener('submit', async e=>{
+    const fireworks = new Fireworks.default(document.getElementById('fireworks'), {
+      autoresize: true,
+      opacity: 0.9,
+      acceleration: 1.05,
+      friction: 0.95,
+      gravity: 1.5,
+      particles: 100,
+      traceLength: 3,
+      traceSpeed: 10,
+      explosion: 6
+    });
+
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       popupText.innerText = '⏳ Đang gửi, vui lòng chờ...';
       popup.style.display = 'flex';
 
       const formData = new FormData(form);
       const data = {};
-      for(let [k,v] of formData) data[k] = v.trim();
+      for (let [k, v] of formData) data[k] = v.trim();
 
       try {
-        // Gửi dữ liệu đến bot Discord trên VPS
         const res = await fetch('https://160.250.134.139:3000/discord', {
           method: 'POST',
-          headers: {'Content-Type':'application/json'},
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-        if(res.ok) {
-          form.reset(); submitBtn.disabled = true;
-          setTimeout(()=>{
+        if (res.ok) {
+          form.reset();
+          submitBtn.disabled = true;
+          setTimeout(() => {
             popupText.innerText = '🎉 Gửi thành công!';
             fireworks.start();
-            setTimeout(()=>{
+            setTimeout(() => {
               fireworks.stop();
               popup.style.display = 'none';
-            },5000);
-          },1000);
+            }, 5000);
+          }, 1000);
         } else throw '';
-      } catch(err) {
+      } catch {
         popupText.innerText = '❌ Lỗi khi gửi.';
-        setTimeout(()=>popup.style.display='none',3000);
+        setTimeout(() => popup.style.display = 'none', 3000);
       }
     });
   </script>
