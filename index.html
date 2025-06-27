@@ -43,20 +43,36 @@
     }
 
     .form-box {
-  background: rgba(0, 0, 0, 0.6); /* nền đen mờ */
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.2); /* viền trắng nhạt */
-  max-height: 80vh;
-  overflow-y: auto;
-}
-    
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-height: 80vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.4) rgba(255,255,255,0.1);
+    }
+
+    .form-box::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .form-box::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+    }
+
+    .form-box::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
     .form-box img {
       max-width: 100%;
       border-radius: 8px;
@@ -139,25 +155,20 @@
 </head>
 <body>
 
-  <!-- Nền video -->
   <video class="background-video" autoplay loop muted playsinline>
     <source src="https://dtllcx9aqzlch.cloudfront.net/c4tcyh%2Ffile%2F5bedb79737a7a96694acb9edb437aa37_949bb4a20d764afa160ce73bda29a3d9.mp4?response-content-disposition=inline%3Bfilename%3D%225bedb79737a7a96694acb9edb437aa37_949bb4a20d764afa160ce73bda29a3d9.mp4%22%3B&response-content-type=video%2Fmp4&Expires=1751019296&Signature=MWeu-NmTwt2G6YRThk1rFomCvVpWtvleBIGSqlr-fdd18dvXuKuuWTaWvL~F5t3X0h1VAZ9GTVw25D5OowHoJofjqXCXYFrpIE~nZEUTaHkB3L1Vh~pMT8E~cBeJWoGtaYkWRdT1NtAnwdeYKxKsAomVPCFmP~K23iVsgjYshNsUMVD95ONQohg~VO-pXjvpDZDyRVvj09UUBHHkHJ-xx62afFLjzUOSg5JV4iIGNB4WI3FjJ8yqqNSOTXj2nFYW4I1YB5~mR-wJoaaW4FjZ~CmcosHPLPu--FwWRH1pIscX2VRGozrvAYQQw5TEZnpT~EgGqOcCIuuT3-1zPQwhvg__&Key-Pair-Id=APKAJT5WQLLEOADKLHBQ" type="video/mp4">
     Trình duyệt của bạn không hỗ trợ video.
   </video>
 
-  <!-- Hiệu ứng pháo bông -->
   <canvas id="fireworks"></canvas>
 
-  <!-- Popup đang gửi -->
   <div class="popup" id="popup">
     <div id="popupText">⏳ Đang gửi, vui lòng chờ...</div>
   </div>
 
-  <!-- Form -->
   <div class="container">
     <div class="form-box">
       <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVBMsuO1gyZcJp7-IbqfYf9aCgXLfUavzE31pOZbtcwtYTZ1ZvEaI3Hi7WdvPzRKqoA5Bvox0lSGmEJAvK1Q9RQAaHY5mw6Cj1ah8HiKNdI5nDA8YrRZ28IN-A8lsH0_Qw-GWlgFjOdT0jZdDKDbDCSq=w1920?key=pL74uRo6jH6YZBCnkHHxew" alt="Banner">
-
       <h2>Đăng Kí Vào Server</h2>
 
       <form id="myForm" action="https://script.google.com/macros/s/AKfycbzJVojt2Omo3p4eM9r1tw1XsGJyjiSOL_sgq96nh9VJREsGV4yh7lVU8Vwe5U4EiXY7Pw/exec" method="POST">
@@ -232,7 +243,7 @@
       .then(response => {
         if (response.ok) {
           form.reset();
-          checkFieldsFilled(); // reset nút
+          checkFieldsFilled();
           setTimeout(() => {
             popupText.innerText = '🎉 Gửi thành công!';
             fireworks.start();
