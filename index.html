@@ -229,10 +229,11 @@
       const data = {};
       new FormData(form).forEach((v, k) => data[k] = v.trim());
 
-     fetch('http://YOUR_VPS_IP:3000/discord', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+      try {
+        const res = await fetch('http://160.250.134.139:3000/discord', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
 
         if (res.ok) {
